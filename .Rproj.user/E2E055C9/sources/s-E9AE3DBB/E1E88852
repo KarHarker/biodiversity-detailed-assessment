@@ -1,0 +1,26 @@
+{
+    "id": "E1E88852",
+    "path": "C:/tmp/biodiversity-detailed-assessment/R/functions.R",
+    "project_path": "R/functions.R",
+    "type": "r_source",
+    "hash": "3324045756",
+    "contents": "",
+    "dirty": false,
+    "created": 1658249071572.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "208,0",
+        "scrollLine": "205"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1658269959,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1658269959600,
+    "read_only": false,
+    "read_only_alternatives": []
+}
