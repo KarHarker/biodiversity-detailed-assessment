@@ -2,3 +2,15 @@
 .Rhistory
 .RData
 .Ruserdata
+*.csv
+out/*
+tmp/*
+data/*
+.*.Rnb.cached
+README.html
+print_ver/*.pdf
+.DS_Store
+docs/*
+*.log
+backup*
+_targets/
