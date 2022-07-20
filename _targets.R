@@ -16,13 +16,7 @@ source("packages.R")
 source("R/functions.R")
 
 conflict_prefer("filter", "dplyr")
-#plan(callr)
 
-#tar_option_set(packages=c("dplyr", "tidyr", "readr", "purrr", "stringr", "ggplot2",
-#                          "lubridate", "glue", "assertr", "sf", "bcmaps", "bcdata",
-#                          "rmapshaper", "geojsonio", "ggiraph", "cowplot", "shiny",
-#                          "knitr", "rmarkdown", "kableExtra", "tibble"),
-#               imports=c("bcmaps", "bcdata"))
 
 # load datasets ------------------------------------------------------------------------------------
 
@@ -34,45 +28,19 @@ load_datasets <- list(
   tar_target(ch_data, ch_data_load()), #critical habitat data, overlapping
   tar_target(ch_flat, ch_data_flat()), # critical habitat flat
 
-
-  # Land Use & Protected Areas
-  tar_target(pa_data, get_cpcad_bc_data()), # ppa and oecm, function will pull data from website
-  tar_target(des_lands_vis, designated_lands_vis()), # designated lands, overlapping
-  tar_target(des_lands, designated_lands()), # designated lands, flat
-  tar_target(lup_data, lup_boundaries()), # land use planning boundaries
-  tar_target(future_cons, ralcp()), # potential future conservation areas, IPCAs, etc.
-
-  #Industrial Activities
-  tar_target(cutblock_data, forest_cutblock()), # active/pending/retired cutblock
-  tar_target(harv_auth, harvest_authority()),
-  tar_target(managed_license, forest_license()),
-  tar_target(tfl_data, tree_farm_license()),
-  tar_target(tsa_area, tsa()),
-
-  tar_target(mining_active, active_min_data()),
-  tar_target(mining_tenure, potential_min_data()),
-
-  tar_target(land_tenure, land_tenures()),
-
-  tar_target(eao_points, eao_data()),
-
-
-  #Site data, add/change here
+  # Site data, add/change here
   tar_target(th_wma_data, th_wma())
 )
 
-clean_data <- list(
-  tar_target(clean_pa, remove_overlaps(pa_data)),
-  tar_target(lup_clipped, intersect_pa(lup_data, bcmaps::bc_bound_hres()))
-)
+
 
 # WMA Analysis ------------------------------------------------------------
 
 wma_analysis <- list(
-  tar_target(wma_og, intersect_pa(th_wma_data, og_data)),
-  tar_target(wma_ch, intersect_pa(th_wma_data, ch_data)),
-  tar_target(wma_des, intersect_pa(th_wma_data, des_lands)),
-  tar_target(wma_lup, intersect_pa(th_wma_data, lup_data))
+  tar_target(wma_og_all, intersect_pa(th_wma_data, og_data)),
+  tar_target(wma_priority_og, intersect_pa(th_wma_data, priority_og_data)),
+  tar_target(wma_des_overlap, intersect_pa(th_wma_data, ch_data)),
+  tar_target(wma_des_flat, intersect_pa(th_wma_data, ch_flat))
 )
 
 
@@ -80,6 +48,47 @@ wma_analysis <- list(
 # targets pipeline --------------------------------------------------------
 list(
   load_datasets,
-  clean_data,
   wma_analysis
 )
+
+
+
+
+# Extras
+
+# clean_data <- list(
+#   tar_target(clean_pa, remove_overlaps(pa_data)),
+#   tar_target(lup_clipped, intersect_pa(lup_data, bcmaps::bc_bound_hres()))
+# )
+
+
+# extras <- list(
+#
+#
+#   # Land Use & Protected Areas
+#   tar_target(pa_data, get_cpcad_bc_data()), # ppa and oecm, function will pull data from website
+#   tar_target(des_lands_vis, designated_lands_vis()), # designated lands, overlapping
+#   tar_target(des_lands, designated_lands()), # designated lands, flat
+#   tar_target(lup_data, lup_boundaries()), # land use planning boundaries
+#   tar_target(future_cons, ralcp()), # potential future conservation areas, IPCAs, etc.
+#
+#   # Industrial Activities
+#
+#   #forestry
+#   tar_target(cutblock_data, forest_cutblock()), # active/pending/retired cutblock
+#   tar_target(harv_auth, harvest_authority()),
+#   tar_target(managed_license, forest_license()),
+#   tar_target(tfl_data, tree_farm_license()),
+#   tar_target(tsa_area, tsa()),
+#   #mining
+#   tar_target(mining_active, active_min_data()),
+#   tar_target(mining_tenure, potential_min_data()),
+#   #land tenures
+#   tar_target(land_tenure, land_tenures()),
+#   #environmental assessment office
+#   tar_target(eao_points, eao_data())
+#
+#
+#
+#
+# )

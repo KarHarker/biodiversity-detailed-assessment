@@ -34,32 +34,6 @@ priority_og <- function(){
   og
 }
 
-
-# Protected Area/OECM Dataset
-
-get_cpcad_bc_data <- function() {
-  f <- "CPCAD-BDCAPC_Dec2020.gdb.zip"
-  ff <- file.path("data", str_remove(f, ".zip"))
-  if(!dir.exists(ff)){
-    download.file(file.path("https://cws-scf.ca", f), destfile = f)
-    unzip(f, exdir = "data")
-    unlink(f)
-  }
-
-  pa <- st_read(ff, layer = "CPCAD_Dec2020") %>%
-    rename_all(tolower) %>%
-    dplyr::filter(str_detect(loc_e, "British Columbia")) %>%
-    dplyr::filter(!(aichi_t11 == "No" & oecm == "No")) %>%
-    dplyr::filter(biome == "T") %>%
-    mutate(pa_type = ifelse(oecm == "No", "ppa", "oecm")) %>%
-    st_make_valid() %>%
-    st_transform(st_crs(3005)) %>%
-    mutate(area_all = as.numeric(st_area(.))) %>%
-    st_cast(to = "POLYGON", warn = FALSE)
-  pa
-}
-
-
 # Critical Habitat - all data, will have overlaps - use for visualization, not for area calculations
 
 ch_data_load <- function(){
@@ -86,6 +60,32 @@ ch_data_flat <- function(){
   ch_area
 
 }
+# Protected Area/OECM Dataset
+
+get_cpcad_bc_data <- function() {
+  f <- "CPCAD-BDCAPC_Dec2020.gdb.zip"
+  ff <- file.path("data", str_remove(f, ".zip"))
+  if(!dir.exists(ff)){
+    download.file(file.path("https://cws-scf.ca", f), destfile = f)
+    unzip(f, exdir = "data")
+    unlink(f)
+  }
+
+  pa <- st_read(ff, layer = "CPCAD_Dec2020") %>%
+    rename_all(tolower) %>%
+    dplyr::filter(str_detect(loc_e, "British Columbia")) %>%
+    dplyr::filter(!(aichi_t11 == "No" & oecm == "No")) %>%
+    dplyr::filter(biome == "T") %>%
+    mutate(pa_type = ifelse(oecm == "No", "ppa", "oecm")) %>%
+    st_make_valid() %>%
+    st_transform(st_crs(3005)) %>%
+    mutate(area_all = as.numeric(st_area(.))) %>%
+    st_cast(to = "POLYGON", warn = FALSE)
+  pa
+}
+
+
+
 
 # designated lands dataset - overlapping
 designated_lands_vis <- function(){
