@@ -1,4 +1,8 @@
 Datasets needed to run targets workflow:
 
-- CriticalHabitat.gdb - available in NAG-GAT folder, used in ch_data_load() and ch_data_flat() functions
+- CriticalHabitat.gdb - available in NAG-GAT/data folder, used in ch_data_load() and ch_data_flat() functions
+
+
+
+
 - designatedlands.gpkg - available in NAG-GAT folder, used in designated_lands_vis() and designated_lands() functions
